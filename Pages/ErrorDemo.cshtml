@@ -1,0 +1,23 @@
+@page
+@model ErrorDemoModel
+@{
+    ViewData["Title"] = "HTMX Error Handling Demo";
+}
+
+<h2>HTMX Error Handling Demo</h2>
+
+<p>Enter a number between 0 and 100:</p>
+<form hx-post="/ErrorDemo" hx-target="#result" hx-swap="innerHTML">
+    <input type="number" name="number" class="form-control mb-2" required />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+    document.body.addEventListener('htmx:responseError', function(evt) {
+        const xhr = evt.detail.xhr;
+        const target = evt.detail.target;
+        target.innerHTML = `<div class="alert alert-danger mt-2">Error: ${xhr.responseText}</div>`;
+    });
+</script>

@@ -1,0 +1,81 @@
+@page "{id?}"
+@model TodoOOBModel
+@{
+    ViewData["Title"] = "HTMX TODO OOB Demo";
+}
+
+<h2>HTMX TODO List with OOB Updates</h2>
+
+<p>
+    Total Tasks: <span id="taskCount">@Model.Tasks.Count</span>
+</p>
+<p>
+    Last Modified: <span id="lastModified">None</span>
+</p>
+
+<!-- Add new task -->
+<form hx-post="/TodoOOB" hx-target="#todoList" hx-swap="beforeend" class="mb-3">
+    <input name="title" type="text" placeholder="Task title..." class="form-control mb-1" required />
+    <input name="description" type="text" placeholder="Task description..." class="form-control mb-1" />
+    <button type="submit" class="btn btn-primary">Add Task</button>
+    <span class="spinner" hx-indicator>⏳</span>
+</form>
+
+<ul id="todoList" class="list-group mt-3">
+    @foreach (var task in Model.Tasks)
+    {
+        <li class="list-group-item task-item" id="task-@task.Id">
+            <strong>@task.Title</strong> - @task.Description
+            <div class="mt-1">
+                <!-- PUT -->
+                <button hx-put="/TodoOOB/@task.Id"
+                        hx-target="#task-@task.Id"
+                        hx-swap="outerHTML"
+                        hx-prompt="Title | Description"
+                        class="btn btn-sm btn-warning">
+                    Edit (PUT)
+                </button>
+                <span class="spinner" hx-indicator>⏳</span>
+
+                <!-- PATCH -->
+                <button hx-patch="/TodoOOB/@task.Id"
+                        hx-target="#task-@task.Id"
+                        hx-swap="outerHTML"
+                        hx-prompt="New description"
+                        class="btn btn-sm btn-info">
+                    Edit Desc (PATCH)
+                </button>
+                <span class="spinner" hx-indicator>⏳</span>
+
+                <!-- DELETE -->
+                <button hx-delete="/TodoOOB/@task.Id"
+                        hx-target="#task-@task.Id"
+                        hx-swap="outerHTML"
+                        hx-vals="JSON.stringify({ taskId: '@task.Id' })"
+                        hx-on="htmx:afterRequest: fetch('/TodoOOB/LastModified?taskId=@task.Id').then(r=>r.text()).then(t=>document.getElementById('lastModified').innerHTML=t)"
+                        class="btn btn-sm btn-danger">
+                    Delete
+                </button>
+                <span class="spinner" hx-indicator>⏳</span>
+            </div>
+        </li>
+    }
+</ul>
+
+<style>
+.task-item {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #f0f0f0;
+    transition: all 0.4s ease-in-out;
+    position: relative;
+}
+
+.task-item.htmx-request { background-color: #fff3cd; transform: scale(0.95); box-shadow:0 0 8px #ffc107; }
+.task-item.htmx-added { background-color: #d4edda; transform: scale(1.05); box-shadow:0 0 12px #28a745; }
+.task-item.htmx-settling { transform: scale(1); box-shadow:none; background-color:#f0f0f0; }
+
+.spinner { display:none; margin-left:0.5rem; }
+button:disabled + .spinner, button.htmx-request + .spinner { display:inline-block; }
+</style>

@@ -1,0 +1,53 @@
+@page
+@model GreetingModel
+<style>
+.swap-container {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 10px;
+    width: 400px;
+    margin: 20px;
+}
+
+hr {
+    border: 2px dashed darkslateblue;
+}
+</style>
+<h1>hx-swap demo</h1>
+<p>This is a demo of <code>hx-swap</code> values.</p>
+<br />
+<br />
+<br />
+<div id="swap-examples"></div>
+<script>
+var swapValues = [
+    "innerHTML",
+    "outerHTML",
+    "beforebegin",
+    "afterbegin",
+    "beforeend",
+    "afterend",
+    "delete",
+    "none"
+];
+var parentElement = document.getElementById("swap-examples");
+swapValues.forEach((value,index) => {
+    let containerId = "greeting" + index;
+    var container = document.createElement("div");
+    container.setAttribute("id",containerId);
+    container.setAttribute("class","swap-container");
+    parentElement.appendChild(container);
+    var h2 = document.createElement("h2");
+    h2.innerText += value;
+    container.appendChild(h2);
+    container.appendChild(document.createElement("br")); // spacer
+    var triggerButton = document.createElement("button");
+    triggerButton.innerText = "Load Greeting with hx-swap='" + value + "'";
+    triggerButton.setAttribute("hx-target", "#" + containerId);
+    triggerButton.setAttribute("hx-get", "/swap?handler=Message");
+    triggerButton.setAttribute("hx-swap", value);
+    container.appendChild(triggerButton);
+    parentElement.appendChild(document.createElement("hr")); // spacer
+});
+</script>
+

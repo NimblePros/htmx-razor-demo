@@ -1,0 +1,17 @@
+@page
+@model PromptModel
+
+<h2>Favorite Dessert</h2>
+
+<button
+    hx-post="/prompt?handler=FavoriteDessert"
+    hx-prompt="What's your favorite dessert?"
+    hx-confirm="Are you sure you want to submit your favorite dessert?"
+    hx-target="#result"
+    hx-swap="innerHTML"
+    class="btn btn-primary">
+    Tell Me Your Favorite Dessert
+</button>
+<br /><br /><br />
+<hr />
+<div id="result"></div>

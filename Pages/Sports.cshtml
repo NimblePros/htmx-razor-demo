@@ -1,0 +1,50 @@
+@page
+@model SportsModel
+
+<h2>Favorite Sport with HTMX Visual Feedback</h2>
+
+<button
+    hx-post="/Sports"
+    hx-prompt="Enter your favorite sport:"
+    hx-confirm="Are you sure?"
+    hx-target="#result"
+    hx-swap="innerHTML"
+    class="btn btn-primary">
+    Submit Sport
+</button>
+
+<div id="result" class="feedback">
+    No sport selected yet.
+</div>
+
+<style>
+/* Base style */
+.feedback {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.5s ease-in-out;
+    background-color: #f0f0f0;
+}
+
+/* When HTMX is sending the request */
+.htmx-request {
+    background-color: #fff3cd; /* yellow-ish to show loading */
+    transform: scale(2.5);
+    box-shadow: 0 0 10px #ffc107;
+}
+
+/* When the element is newly added/swapped */
+.htmx-added {
+    background-color: dodgerblue; /* green-ish for success */
+    transform: scale(1.05);
+    box-shadow: 0 0 15px lemonchiffon;
+}
+
+/* Smooth transition back to normal */
+.htmx-settling {
+    background-color: black; /* black for standing out */
+    transform: scale(3);
+    box-shadow: none;
+}
+</style>

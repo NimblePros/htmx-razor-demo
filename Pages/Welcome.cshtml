@@ -1,0 +1,5 @@
+@page
+@model WelcomeModel
+
+<button hx-get="/welcome?handler=Message" hx-target="#message" hx-swap="beforeend">Get a Welcome Message</button>
+<div id="message"></div>
