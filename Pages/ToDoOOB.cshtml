@@ -50,7 +50,7 @@
                 <!-- DELETE -->
                 <button hx-delete="/TodoOOB/@task.Id"
                         hx-target="#task-@task.Id"
-                        hx-swap="outerHTML"
+                        hx-swap="delete"
                         hx-vals="JSON.stringify({ taskId: '@task.Id' })"
                         hx-on="htmx:afterRequest: fetch('/TodoOOB/LastModified?taskId=@task.Id').then(r=>r.text()).then(t=>document.getElementById('lastModified').innerHTML=t)"
                         class="btn btn-sm btn-danger">

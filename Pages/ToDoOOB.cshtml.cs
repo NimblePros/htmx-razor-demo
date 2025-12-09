@@ -85,7 +85,7 @@ public class TodoOOBModel : PageModel
         <button hx-patch=""/TodoOOB/{task.Id}"" hx-target=""#task-{task.Id}"" hx-swap=""outerHTML"" hx-prompt=""New description"" class=""btn btn-sm btn-info"">Edit Desc (PATCH)</button>
         <span class=""spinner"" hx-indicator>⏳</span>
 
-        <button hx-delete=""/TodoOOB/{task.Id}"" hx-target=""#task-{task.Id}"" hx-swap=""outerHTML"" class=""btn btn-sm btn-danger"">Delete</button>
+        <button hx-delete=""/TodoOOB/{task.Id}"" hx-target=""#task-{task.Id}"" hx-swap=""delete"" class=""btn btn-sm btn-danger"">Delete</button>
         <span class=""spinner"" hx-indicator>⏳</span>
     </div>
 </li>

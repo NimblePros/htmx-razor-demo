@@ -1,0 +1,48 @@
+@page
+@model ContactModel
+
+<script>
+  function StartLogging() {
+    console.log("Starting HTMX logging");
+    htmx.logAll();
+  }
+
+  function StopLogging() {
+    console.log("Stopping HTMX logging");
+    htmx.logNone();
+  }
+
+  function StartConditionalLogging(){
+    console.log("Enabling conditional HTMX logging");
+    htmx.logger = function(elt, eventName, detail) {
+      // Log only specific events, such as afterSwap
+      if (eventName === 'htmx:afterSwap') {
+          console.log(`HTMX Event: ${eventName} on`, elt, detail);
+      }
+    };
+  }
+</script>
+
+<style>
+  input,
+  textarea {
+    min-width: 400px;
+    width: 400px;
+  }
+</style>
+<h1>Contact Us</h1>
+<button onclick="StartLogging()">Log all the things</button>
+<button onclick="StartConditionalLogging()">Log conditionally</button>
+<button onclick="StopLogging()">Stop logging</button>
+<form hx-post="/contact?handler=SubmitContact" hx-target="#result">
+  @Html.AntiForgeryToken()
+  <label for="name">Name:</label><br />
+  <input type="text" id="name" name="name" placeholder="Your Name" required minlength="2" 
+    hx-validate="true" /><br />
+  <label for="email">Email:</label><br />
+  <input type="email" id="email" name="email" placeholder="Your Email" required /><br />
+  <label for="message">Message:</label><br />
+  <textarea name="message" id="message" placeholder="Your Message" required minlength="20"></textarea><br />
+  <button type="submit">Send</button>
+</form>
+<div id="result"></div>
